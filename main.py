@@ -30,7 +30,14 @@ def clean_html(input_file, output_file):
     # css link removing
     for link in soup.find_all("link"):
         rel = link.get("rel")
+        as_attr = link.get("as")
+
         if rel and "stylesheet" in rel:
+            link.decompose()
+        elif rel and "preload" in rel and as_attr == "style":
+            link.decompose()
+    #  remove preload scripts 
+        if rel and "preload" in rel and as_attr == "script":
             link.decompose()
 
     # inline css removing
