@@ -1,6 +1,6 @@
 import os
-from src.scraping.scraper import scrape_html
-from src.cleaning.cleaner import clean_html
+from src import scrape_html
+from src import clean_html
 
 url = input("Type URL (with https:) :")
 
