@@ -8,7 +8,7 @@ def scrape_html_with_js(url):
         context = browser.new_context(java_script_enabled=True)
         page = context.new_page()
 
-        page.goto(url, wait_until="networkidle")
+        page.goto(url, wait_until="domcontentloaded", timeout=60000)
         html = page.content()
 
         context.close()
@@ -24,7 +24,7 @@ def scrape_html_without_js(url):
         context = browser.new_context(java_script_enabled=False)
         page = context.new_page()
 
-        page.goto(url, wait_until="networkidle")
+        page.goto(url, wait_until="domcontentloaded", timeout=60000)
         html = page.content()
 
         context.close()
