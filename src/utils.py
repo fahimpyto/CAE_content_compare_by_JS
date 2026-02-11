@@ -52,3 +52,14 @@ def save_csv_log(url: str, withjs_path: str, withoutjs_path: str, csv_file: str)
             writer.writerow(["url", "withJS_file_path", "withoutJS_file_path"])
 
         writer.writerow([url, withjs_path, withoutjs_path])
+
+def save_terminal_report(url: str, output_folder: str, report_text: str) -> str:
+    base_name = make_safe_filename(url)
+
+    report_file = os.path.join(output_folder, f"{base_name}_compare_report.txt")
+    report_file = ensure_unique_filename(report_file)
+
+    with open(report_file, "w", encoding="utf-8") as f:
+        f.write(report_text)
+
+    return report_file
