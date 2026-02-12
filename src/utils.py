@@ -42,16 +42,17 @@ def write_file(filepath: str, content: str):
         f.write(content)
 
 
-def save_csv_log(url: str, withjs_path: str, withoutjs_path: str, csv_file: str):
+def save_csv_log(url: str, withjs_path: str, withoutjs_path: str, report_path: str, csv_file: str):
     file_exists = os.path.exists(csv_file)
 
     with open(csv_file, mode="a", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
 
         if not file_exists:
-            writer.writerow(["url", "withJS_file_path", "withoutJS_file_path"])
+            writer.writerow(["url", "withJS_file_path", "withoutJS_file_path", "report_file_path"])
 
-        writer.writerow([url, withjs_path, withoutjs_path])
+        writer.writerow([url, withjs_path, withoutjs_path, report_path])
+
 
 def save_terminal_report(url: str, output_folder: str, report_text: str) -> str:
     base_name = make_safe_filename(url)
@@ -63,3 +64,16 @@ def save_terminal_report(url: str, output_folder: str, report_text: str) -> str:
         f.write(report_text)
 
     return report_file
+def is_url_already_scraped(url: str, csv_file: str) -> bool:
+    if not os.path.exists(csv_file):
+        return False
+
+    with open(csv_file, mode="r", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)  # skip header
+
+        for row in reader:
+            if row and row[0].strip().rstrip("/") == url.strip().rstrip("/"):
+                return True
+
+    return False
